@@ -1,0 +1,15 @@
+{
+  "name": "Estudio A · Generador de Presupuestos",
+  "short_name": "Estudio A",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1c1c1c",
+  "theme_color": "#1c1c1c",
+  "icons": [
+    {
+      "src": "assets/img/brand/logo-estudio-a.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Estudio A · Generador de Presupuestos</title>
+  <meta name="description" content="Generador de presupuestos profesionales y de remodelación de Estudio A & Asociados, listo para impresión A4 y exportación a PDF.">
+  <meta name="robots" content="index,follow">
+  <meta name="author" content="Estudio A & Asociados">
+  <meta name="theme-color" content="#1c1c1c">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="canonical" href="https://example.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:title" content="Estudio A · Generador de Presupuestos">
+  <meta property="og:description" content="Herramienta para generar presupuestos profesionales y de remodelación con formato editorial e impresión A4.">
+  <meta property="og:image" content="assets/img/brand/logo-estudio-a.png">
+  <meta property="og:site_name" content="Estudio A & Asociados">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Estudio A · Generador de Presupuestos">
+  <meta name="twitter:description" content="Generador de presupuestos profesionales y de remodelación con diseño editorial listo para PDF.">
+  <meta name="twitter:image" content="assets/img/brand/logo-estudio-a.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="assets/img/brand/logo-estudio-a.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="app-bar">
+    <div class="app-brand">
+      <img class="app-logo" src="assets/img/brand/logo-principal-crop.png" alt="Estudio A & Asociados">
+      <div>
+        <div class="name">Generador de Presupuestos</div>
+        <div class="sub">Estudio A & Asociados</div>
+      </div>
+    </div>
+    <button class="btn-pdf" type="button" onclick="doPrint()">🖨 PDF</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-edit" type="button" onclick="setTab('edit')">✏ Editar</button>
+    <button class="tab" id="tab-preview" type="button" onclick="setTab('preview')">👁 Previsualizar</button>
+  </div>
+
+  <main>
+    <section class="panel active" id="panel-edit">
+      <div class="form-wrap">
+        <div class="fsec">
+          <div class="fsec-title">Tipo de presupuesto</div>
+          <div class="tipo-sel">
+            <button class="tipo-btn active" id="tb-prof" type="button" onclick="setTipo('prof')">Tareas Profesionales</button>
+            <button class="tipo-btn" id="tb-remo" type="button" onclick="setTipo('remo')">Remodelación</button>
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">Documento</div>
+          <div class="row2">
+            <div class="field">
+              <label for="fNum">N° Presupuesto</label>
+              <input id="fNum" type="text" placeholder="0050" oninput="render()">
+            </div>
+            <div class="field">
+              <label for="fFecha">Fecha</label>
+              <input id="fFecha" type="text" placeholder="24 de marzo de 2026" oninput="render()">
+            </div>
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">Cliente</div>
+          <div class="field">
+            <label for="fCliente">Nombre / Razón Social</label>
+            <input id="fCliente" type="text" placeholder="Nombre del cliente" oninput="render()">
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="fContacto">Contacto / WhatsApp</label>
+              <input id="fContacto" type="text" placeholder="+54 9 223 000-0000" oninput="render()">
+            </div>
+            <div class="field">
+              <label for="fUbicacion">Ubicación</label>
+              <input id="fUbicacion" type="text" placeholder="Calle 1234 PB - Mar del Plata" oninput="render()">
+            </div>
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">Descripción del proyecto</div>
+          <div class="field">
+            <label for="fDesc">Alcance / Descripción breve</label>
+            <textarea id="fDesc" placeholder="Remodelación y reciclado de departamento de ≈ 60m² cubiertos y 20m² semicubiertos..." oninput="render()"></textarea>
+          </div>
+        </div>
+
+        <div id="sec-prof">
+          <div class="fsec">
+            <div class="fsec-title">Incluye / No incluye</div>
+            <div class="scope-edit-grid">
+              <div class="scope-edit-col yes">
+                <div class="scope-edit-head">Incluye</div>
+                <div id="scopeYesWrap"></div>
+              </div>
+              <div class="scope-edit-col no">
+                <div class="scope-edit-head">No incluye</div>
+                <div id="scopeNoWrap"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fsec">
+            <div class="fsec-title">Honorarios</div>
+            <div class="row2">
+              <div class="field">
+                <label for="fHon">Honorarios Profesionales ($)</label>
+                <input id="fHon" type="number" placeholder="5240000" oninput="calcProf()">
+              </div>
+              <div class="field">
+                <label for="fColeg">Gastos Colegiales ($)</label>
+                <input id="fColeg" type="text" placeholder="N/C" oninput="render()">
+              </div>
+            </div>
+          </div>
+          <div class="fsec">
+            <div class="fsec-title">Forma de pago</div>
+            <div class="row2">
+              <div class="field">
+                <label for="fPct">Anticipo (%)</label>
+                <input id="fPct" type="number" value="40" min="0" max="100" oninput="calcProf()">
+              </div>
+              <div class="field">
+                <label for="fCuotas">Cuotas mensuales restantes</label>
+                <input id="fCuotas" type="number" value="5" min="1" oninput="calcProf()">
+              </div>
+            </div>
+            <div class="info-box" id="pagoBoxProf"></div>
+          </div>
+        </div>
+
+        <div id="sec-remo" style="display:none">
+          <div class="fsec">
+            <div class="fsec-title">Tareas por sector</div>
+            <div id="sectoresWrap"></div>
+            <div class="btn-row">
+              <button class="btn-sec" type="button" onclick="addSector()">+ Agregar sector</button>
+            </div>
+          </div>
+
+          <div class="fsec">
+            <div class="fsec-title">Monto y pago</div>
+            <div class="field">
+              <label for="fTotalRemo">Total ($)</label>
+              <input id="fTotalRemo" type="number" placeholder="14900000" oninput="calcRemo()">
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="fAntRemo">Anticipo / Cuota 0 ($)</label>
+                <input id="fAntRemo" type="number" placeholder="3700000" oninput="calcRemo()">
+              </div>
+              <div class="field">
+                <label for="fCuotasRemo">Cuotas semanales</label>
+                <input id="fCuotasRemo" type="number" value="8" min="1" oninput="calcRemo()">
+              </div>
+            </div>
+            <div class="info-box" id="pagoBoxRemo"></div>
+          </div>
+
+          <div class="fsec">
+            <div class="fsec-title">Plazos y horarios</div>
+            <div class="field">
+              <label for="fPlazo">Plazo de obra estimado</label>
+              <input id="fPlazo" type="text" placeholder="2 meses + 15 días" oninput="render()">
+            </div>
+            <div class="field">
+              <label for="fHorario">Horario de trabajo</label>
+              <input id="fHorario" type="text" placeholder="Lunes a viernes de 9:00 a 13:00 hs. y de 16:00 a 20:00 hs." oninput="render()">
+            </div>
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">Condiciones</div>
+          <div class="row2">
+            <div class="field">
+              <label for="fVig">Vigencia (días)</label>
+              <input id="fVig" type="number" value="15" oninput="render()">
+            </div>
+            <div class="field">
+              <label for="fMetPago">Forma de pago</label>
+              <input id="fMetPago" type="text" value="Transferencia bancaria o efectivo" oninput="render()">
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row form-actions">
+          <button class="btn-pdf" type="button" onclick="setTab('preview');render()">Ver preview →</button>
+          <button class="btn-sec" type="button" onclick="doPrint()">🖨 Imprimir / PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-preview">
+      <div class="preview-wrap">
+        <div class="preview-actions">
+          <button class="btn-pdf" type="button" onclick="doPrint()">🖨 Imprimir / Guardar PDF</button>
+          <button class="btn-sec" type="button" onclick="setTab('edit')">← Volver a editar</button>
+        </div>
+        <div class="doc-frame">
+          <div class="doc" id="docOut"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
