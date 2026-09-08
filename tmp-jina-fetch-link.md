@@ -1,0 +1,1 @@
+Temporary migration bridge: [fetch VIAMONTE Site via Jina Reader](https://r.jina.ai/https://viamonte-1-gestion.ferdiunand.chatgpt.site/)
